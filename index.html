@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stride: a training plan built for teens</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef0ea;--ink:#14181f;--mut:#5b636e;--card:#fff;--line:#d5d9d0;--acc:#2b59ff;--acc2:#fff;--ok:#1f7a55;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11151b;--ink:#eef0ea;--mut:#9aa3af;--card:#1a2029;--line:#2b3340;--acc:#6f93ff;--acc2:#0b1020;--ok:#4cc38a}}
+:root[data-theme="dark"]{--bg:#11151b;--ink:#eef0ea;--mut:#9aa3af;--card:#1a2029;--line:#2b3340;--acc:#6f93ff;--acc2:#0b1020;--ok:#4cc38a}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Bricolage Grotesque',system-ui,sans-serif;line-height:1.5}
+main{max-width:720px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:clamp(2.4rem,9vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1;margin:.3em 0 .2em}
+h2{font-size:1.3rem;margin:1.4em 0 .4em}
+p{max-width:60ch}.mut{color:var(--mut)}
+nav{display:flex;gap:6px;margin:18px 0;overflow-x:auto}
+nav button,.btn{font:inherit;font-weight:600;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:9px 14px;border-radius:10px;cursor:pointer}
+nav button[aria-selected=true],.btn.pri{background:var(--acc);color:var(--acc2);border-color:var(--acc)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:12px 0}
+.day{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:8px 2px;text-align:center;font-size:.8rem;cursor:pointer;font:inherit;color:var(--ink)}
+.day b{display:block;font-size:.95rem}.day.sel{border-color:var(--acc);border-width:2.5px}.day.done{background:var(--ok);color:#fff;border-color:var(--ok)}
+.box{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+label.ex{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}
+label.ex:last-child{border:0}input[type=checkbox]{width:20px;height:20px;margin-top:2px;accent-color:var(--acc)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stats div{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px}
+.stats strong{display:block;font-size:1.9rem;line-height:1}
+input[type=number]{font:inherit;padding:9px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);width:110px}
+ul{padding-left:1.2em}li{margin:.3em 0}.warn{border-left:5px solid var(--acc);padding-left:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid2 label{display:flex;flex-direction:column;font-weight:600;font-size:.9rem;gap:4px}
+select{font:inherit;padding:9px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+label.ex input[type=number]{width:80px}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:7px 4px;border-bottom:1px solid var(--line)}
+[hidden]{display:none!important}
+</style></head><body><main>
+<p class="mut" style="margin:0">Training for ages 13 to 18</p>
+<h1>Stride</h1>
+<p>A 7-day plan that builds strength, stamina and habits. It never sets calorie targets or weight-loss goals, because teens are still growing.</p>
+<nav role="tablist" id="tabs"></nav>
+
+<section id="t-plan">
+ <div class="week" id="week"></div>
+ <div class="box"><h2 style="margin-top:0" id="dtitle"></h2><p class="mut" id="dsub"></p><div id="exs"></div>
+ <p id="rest" class="warn" hidden>You have trained 6 days in a row. Take today as an easy walk or full rest.</p>
+ <button class="btn pri" id="done"></button></div>
+</section>
+
+<section id="t-build" hidden>
+ <h2 style="margin-top:0">Build my plan</h2>
+ <div class="box"><b>Your week</b><p class="mut">Tick the days you can train and set minutes for each.</p><div id="bd"></div></div>
+ <div class="box grid2">
+  <label>Age<input type="number" id="ag" min="13" max="18" value="16"></label>
+  <label>Height (in)<input type="number" id="ht" step=".5" min="48" max="84"></label>
+  <label>Experience<select id="ex2"><option value="beginner">Beginner</option><option value="some">Some</option><option value="regular">Regular</option></select></label>
+  <label>Equipment<select id="eq"><option value="none">None</option><option value="dumbbells">Dumbbells or bands</option><option value="gym">Full gym</option></select></label>
+  <label>Main goal<select id="gl"><option value="strength">Get stronger</option><option value="stamina">Build stamina</option><option value="habit">Build a daily habit</option><option value="all">All-round fitness</option></select></label>
+  <label>Timeframe<select id="mo"><option value="3">3 months</option><option value="6" selected>6 months</option><option value="10">10 months</option><option value="12">12 months</option></select></label>
+ </div>
+ <p class="mut">Goals here are about fitness, not a body weight number.</p>
+ <button class="btn pri" id="bb">Build my plan</button>
+ <div id="bout" aria-live="polite"></div>
+</section>
+
+<section id="t-log" hidden>
+ <div class="stats"><div><strong id="s1">0</strong>sessions this week</div><div><strong id="s2">0</strong>active minutes</div><div><strong id="s3">0</strong>day streak</div></div>
+ <div class="box"><b>Strength check</b><p class="mut">Log your max clean push-ups or squats to see progress over time.</p>
+ <input type="number" id="pr" min="0" placeholder="Reps"> <button class="btn" id="prb">Save</button><p id="prl" class="mut"></p></div>
+</section>
+
+<section id="t-grow" hidden>
+ <h2 style="margin-top:0">Growing taller: what is real</h2>
+ <div class="box"><ul>
+ <li>Your final height is mostly genetics. No exercise, stretch, pill or gadget adds height.</li>
+ <li>What you can control is reaching the height your genes allow:
+  <ul><li>Sleep 8 to 10 hours. Most growth hormone releases during deep sleep.</li>
+  <li>Eat enough, including protein at every meal, plus calcium and vitamin D foods (dairy or fortified alternatives, eggs, fish, greens).</li>
+  <li>Stay active. Lifting with good form is safe for growing bodies.</li></ul></li>
+ <li>Skip growth supplements and "height hacks". They do nothing and some are harmful.</li>
+ <li>Ask a pediatrician about your growth chart. A simple hand X-ray (bone age) shows how much growing time is left.</li></ul></div>
+ <div class="box"><b>Height log</b><p class="mut">Measure monthly, barefoot, same time of day (morning), back to a wall.</p>
+ <input type="number" step=".1" id="hi" placeholder="Inches"> <button class="btn" id="hb">Save</button><ul id="hl"></ul></div>
+</section>
+
+<section id="t-safe" hidden>
+ <h2 style="margin-top:0">Safety rules built in</h2>
+ <div class="box"><ul>
+ <li>No calorie targets, fasting, or weight-loss deadlines. Ever.</li>
+ <li>Never more than 6 hard days in a row. Rest is part of the plan.</li>
+ <li>Start with the easier version of a move. Add reps before adding load.</li>
+ <li>Sharp pain, dizziness or chest pain means stop and tell an adult.</li>
+ <li>Loop in a parent and a pediatrician for anything about weight or nutrition.</li></ul>
+ <p class="mut">Stride is education, not medical advice.</p></div>
+</section>
+
+<script>
+const S={A:["Squat or leg press","Push-ups (wall or bench first)","Row","Hip hinge (Romanian deadlift)","Shoulder press","Plank or dead bug"],
+B:["Goblet squat","Incline push-ups","Lat pulldown or band pull","Lunges","Farmer carry","Side plank"]};
+const P=[{n:"Mon",t:"Strength A",s:"2 to 3 sets each, then 15 min brisk cardio",e:S.A},
+{n:"Tue",t:"Cardio",s:"60 min brisk walk or bike, easy to steady effort",e:["Warm up 5 min","50 min steady pace","Cool down and stretch 5 min"]},
+{n:"Wed",t:"Strength B",s:"2 to 3 sets each, then 15 min cardio",e:S.B},
+{n:"Thu",t:"Cardio and mobility",s:"Sport or swim plus 10 min mobility",e:["45 min sport, swim or bike","10 min hips and hamstrings","5 min breathing and cool down"]},
+{n:"Fri",t:"Strength A",s:"Same as Monday, try one more rep on each move",e:S.A},
+{n:"Sat",t:"Play day",s:"60 min of something fun: hoops, hike, soccer",e:["Pick an activity you enjoy","Keep it social if you can"]},
+{n:"Sun",t:"Recovery",s:"Easy walk and stretching",e:["30 min easy walk","20 min full-body stretch","Plan next week"]}];
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let done=ld('done',[]),sel=(new Date().getDay()+6)%7;
+const $=i=>document.getElementById(i);
+const key=d=>{const x=new Date();x.setDate(x.getDate()-((x.getDay()+6)%7)+d);return x.toISOString().slice(0,10)};
+["Plan","Builder","Progress","Growth","Safety"].forEach((t,i)=>{const b=document.createElement('button');b.textContent=t;b.setAttribute('role','tab');b.onclick=()=>tab(i);$('tabs').appendChild(b)});
+function tab(i){['plan','build','log','grow','safe'].forEach((s,j)=>{$('t-'+s).hidden=i!==j});[...$('tabs').children].forEach((b,j)=>b.setAttribute('aria-selected',i===j))}
+function streak(){let c=0,d=new Date();if(!done.includes(d.toISOString().slice(0,10)))d.setDate(d.getDate()-1);while(done.includes(d.toISOString().slice(0,10))){c++;d.setDate(d.getDate()-1)}return c}
+function render(){
+ $('week').innerHTML='';P.forEach((p,i)=>{const b=document.createElement('button');b.className='day'+(i===sel?' sel':'')+(done.includes(key(i))?' done':'');b.innerHTML='<b>'+p.n+'</b>'+p.t.split(' ')[0];b.onclick=()=>{sel=i;render()};$('week').appendChild(b)});
+ const p=P[sel],k=key(sel);$('dtitle').textContent=p.n+': '+p.t;$('dsub').textContent=p.s;
+ $('exs').innerHTML=p.e.map(e=>'<label class="ex"><input type="checkbox"><span>'+e+'</span></label>').join('');
+ $('done').textContent=done.includes(k)?'Session logged. Undo':'Mark session done';
+ $('rest').hidden=!(streak()>=6&&sel===(new Date().getDay()+6)%7&&!done.includes(k));
+ const wk=[0,1,2,3,4,5,6].filter(i=>done.includes(key(i))).length;
+ $('s1').textContent=wk;$('s2').textContent=wk*60;$('s3').textContent=streak();
+}
+$('done').onclick=()=>{const k=key(sel);done=done.includes(k)?done.filter(x=>x!==k):[...done,k];sv('done',done);render()};
+let prs=ld('prs',[]);function rp(){$('prl').textContent=prs.length?'History: '+prs.map(x=>x.r).join(' , '):''}
+$('prb').onclick=()=>{const v=+$('pr').value;if(v>0){prs.push({r:v});sv('prs',prs);$('pr').value='';rp()}};
+let hs=ld('hs',[]);function rh(){$('hl').innerHTML=hs.map(x=>'<li>'+x.d+': '+x.h+' in</li>').join('')}
+$('hb').onclick=()=>{const v=+$('hi').value;if(v>40){hs.push({d:new Date().toISOString().slice(0,10),h:v});sv('hs',hs);$('hi').value='';rh()}};
+
+const AI_ENDPOINT='/api/plan';
+const DN=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const BAD=/calori|fasting|\bdiet|starv|pounds|\blbs\b|supplement|\bpill/i;
+const FB={strength:"Your strength sessions come first. Add one rep per move each week, then a little load once all sets feel clean.",stamina:"Your cardio days build stamina. Keep most of them at a pace where you can talk, and let one be a bit harder.",habit:"Showing up is the goal. Hit your planned days, and a short session still counts.",all:"You get strength, steady cardio and play in one week. Progress a little at a time."};
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+$('bd').innerHTML=DN.map((d,i)=>'<label class="ex"><input type="checkbox" id="av'+i+'"'+(i%2===0?' checked':'')+'><span style="width:44px">'+d+'</span><input type="number" id="mn'+i+'" value="60" min="20" max="120" step="5" aria-label="'+d+' minutes"> min</label>').join('');
+function rules(s){
+ const cap={beginner:60,some:75,regular:90}[s.exp];
+ const days=s.days.filter(d=>d.on).map(d=>({...d,min:Math.min(d.min,cap)}));
+ const n=days.length;if(!n)return null;
+ const sc=n>=5?3:n>=3?2:1,m=Math.min(n,6);
+ const si=new Set(sc===1?[0]:Array.from({length:sc},(_,i)=>Math.round(i*(m-1)/(sc-1))));
+ let c=0;
+ const out=days.map((d,i)=>({day:DN[d.i],type:si.has(i)?'Strength':(c++%2?'Sport or play':'Steady cardio'),min:d.min}));
+ if(n===7){out[6].type='Recovery walk and stretch';out[6].min=Math.min(out[6].min,45)}
+ const w=Math.round(s.months*4.3),a=Math.round(w*.25),b=Math.round(w*.75);
+ const ph=[["Foundation","Weeks 1 to "+a,"Learn the moves, keep effort easy to moderate, build consistency."],["Build","Weeks "+(a+1)+" to "+b,"Add reps, then a little load. One harder cardio day per week."],["Progress","Weeks "+(b+1)+" to "+w,"Keep progressing, re-test your rep log, plan what comes next."]];
+ return {out,ph};
+}
+function view(r){return '<div class="box"><b>Your week</b><table><tr><th>Day</th><th>Session</th><th>Minutes</th></tr>'+r.out.map(x=>'<tr><td>'+x.day+'</td><td>'+x.type+'</td><td>'+x.min+'</td></tr>').join('')+'</table></div><div class="box"><b>Phases</b><ul>'+r.ph.map(p=>'<li><b>'+p[0]+'</b> ('+p[1]+'): '+p[2]+'</li>').join('')+'</ul></div>'}
+async function coach(s,r){
+ try{const c=new AbortController();setTimeout(()=>c.abort(),15000);
+  const res=await fetch(AI_ENDPOINT,{method:'POST',signal:c.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify({stats:{age:s.age,heightIn:s.h,experience:s.exp,equipment:s.eq,goal:s.goal,months:s.months},plan:r.out,phases:r.ph.map(p=>p[0]+': '+p[2])})});
+  if(!res.ok)throw 0;const t=String((await res.json()).explanation||'').trim();
+  if(!t||BAD.test(t))throw 0;return t}catch(e){return null}
+}
+$('bb').onclick=async()=>{
+ const s={age:+$('ag').value,h:+$('ht').value,exp:$('ex2').value,eq:$('eq').value,goal:$('gl').value,months:+$('mo').value,days:DN.map((_,i)=>({i,on:$('av'+i).checked,min:+$('mn'+i).value||45}))};
+ const o=$('bout');
+ if(!(s.age>=13&&s.age<=18)){o.innerHTML='<p class="warn">Stride is built for ages 13 to 18.</p>';return}
+ const r=rules(s);if(!r){o.innerHTML='<p class="warn">Pick at least one training day.</p>';return}
+ sv('build',{s,r});
+ o.innerHTML=view(r)+'<div class="box" id="ai"><b>Coach note</b><p class="mut">Writing your note...</p></div>';
+ const t=await coach(s,r);
+ $('ai').innerHTML='<b>Coach note</b><p>'+esc(t||FB[s.goal])+'</p>'+(t?'':'<p class="mut">The AI coach is offline, so this is the built-in note.</p>');
+};
+tab(0);render();rp();rh();
+</script></main></body></html>
